@@ -1,0 +1,21 @@
+yum -y install libtirpc-devel
+git clone https://github.com/NetDirect/nfsshell
+
+# NB:  the default CFLAGS and LIBS variables produce the following error in RHEL8
+# mount.h:9:10: fatal error: rpc/rpc.h: No such file or directory
+# #include <rpc/rpc.h>
+# ^~~~~~~~~~~··········································
+# # uncomment the following 3 lines for linux (tested on 2.0.33/redhat 5)
+# CC»·»···= gcc
+# #CFLAGS»»···= -g -DREADLINE -I/usr/local/include
+# #LIBS»··»···= -L/usr/local/lib -lreadline -lhistory -lncurses
+# CFLAGS+=`pkg-config --cflags libtirpc`
+# LIBS=`pkg-config --libs libtirpc`······································
+yum -y install libtirpc-devel
+
+cat Makefile
+# Linux section (replace CFLAGS and LIBS with below values)
+CFLAGS+=`pkg-config --cflags libtirpc`
+LIBS=`pkg-config --libs libtirpc`
+
+make
